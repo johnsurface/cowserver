@@ -32,6 +32,10 @@ const server = restify.createServer();
 server.use(restify.plugins.queryParser());
 server.use(restify.plugins.bodyParser());
 
+server.get('/', (req, res, next) => {
+    res.send('this worked');
+})
+
 server.get('/reports', (req, res, next) => {
     ReportModel.find({}, (err, docs) => {
         var str = '';
