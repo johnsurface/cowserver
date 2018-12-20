@@ -36,7 +36,7 @@ server.get('/reports/:cow', (req, res, next) => {
         console.log(docs);
         var str;
         if (err || !docs) {
-            str = 'Sorry, there were no cows by that name.';
+            str = 'Sorry, there were no recent reports with cows by that name.';
         } else {
             str = `${name} has a knee score of ${docs.knee}, a hock score of ${docs.hock}, and a neck score of ${docs.neck}.`;
         }
@@ -47,14 +47,22 @@ server.get('/reports/:cow', (req, res, next) => {
 
 server.get('/reports', (req, res, next) => {
     ReportModel.find({}, (err, docs) => {
-        var str = '';
+        var str = 'Today, you entered ' + docs.length + ' injury reports. ';
+        var numStage3 = 0;
         docs.forEach(report => {
-            str += `${report.name} has a knee score of ${report.knee} `;
+            // str += `${report.name} has a knee score of ${report.knee} `;
+            if (report.knee == 3){
+                numStage3++;
+            }
+            if (report.hock == 3){
+                numStage3++;
+            }
+            if (report.neck == 3){
+                numStage3++;
+            }
         });
+        str += numStage3 + ' included stage 3 injuries.';
         console.log(str);
-        // res.json({
-        //     code: 200
-        // });
         res.send(str);
     });
 });
