@@ -45,8 +45,8 @@ server.get('/reports/:cow', (req, res, next) => {
     });
 });
 
-server.get('/reports/stage/:stage', (req, res, next) => {
-    let num = req.params.stage;
+server.get('/reports/stage', (req, res, next) => {
+    let num = req.query.stage;
     ReportModel.find({}, (err, docs) => {
         var kneeStr = '';
         var hockStr = '';
