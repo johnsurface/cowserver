@@ -114,7 +114,7 @@ server.get('/reports', (req, res, next) => {
             if (kneeStr || hockStr || neckStr) {
                 res.send(kneeStr + hockStr + neckStr);
             } else {
-                res.send('Sorry, there were no cows with that injury stage');
+                res.send('Sorry, there were no cows with stage ' + num + ' injuries');
             }
         } else if (req.query.alexa) {
             var str = 'Today, you entered ' + docs.length + ' injury reports. ';
