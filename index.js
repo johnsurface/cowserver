@@ -135,7 +135,32 @@ server.get('/reports', (req, res, next) => {
             console.log(str);
             res.send(str);
         } else {
-            res.send(docs);
+            var cows = [];
+            var list = [];
+            docs.forEach(report => {
+                if (cows.indexOf(report.name) == - 1) {
+                    cows.push(report.name);
+                    list.push({
+                        name    : report.name,
+                        cowId   : report.cowId,
+                        reports : [{
+                            timestamp : report.timestamp,
+                            knee      : report.knee,
+                            hock      : report.hock,
+                            neck      : report.neck
+                        }]
+                    });
+                } else {
+                    list[cows.indexOf(report.name)].reports.push({
+                        timestamp : report.timestamp,
+                            knee      : report.knee,
+                            hock      : report.hock,
+                            neck      : report.neck
+                    });
+                }
+            });
+
+            res.send(list);
         }
     });
 });
