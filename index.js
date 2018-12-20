@@ -13,9 +13,9 @@ const ReportSchema = new Schema({
     cowId: String,
     uuid: String,
     timestamp: {type: Date, default: Date.now},
-    knee: {type: Number, default: 0, max: 3},
-    hock: {type: Number, default: 0, max: 3},
-    neck: {type: Number, default: 0, max: 3}
+    knee: {type: Number, default: 1, max: 4},
+    hock: {type: Number, default: 1, max: 4},
+    neck: {type: Number, default: 1, max: 4}
 });
 
 const ReportModel = mongoose.model('Cow', ReportSchema);
@@ -152,6 +152,7 @@ server.post('/report', (req, res, next) => {
         report.timestamp = '2018-12-18 22:14:38.028Z';
         report.save(err => {
             if (err) {
+                console.log(err);
                 res.send(500);
             } else {
                 res.send(200);
