@@ -45,6 +45,43 @@ server.get('/reports/:cow', (req, res, next) => {
     });
 });
 
+server.get('/reports/stage/:stage', (req, res, next) => {
+    let num = req.params.stage;
+    ReportModel.find({}, (err, docs) => {
+        var kneeStr = '';
+        var hockStr = '';
+        var neckStr = '';
+        docs.forEach(report => {
+            if (report.knee == num && kneeStr.indexOf(report.name) == -1){
+                kneeStr += ' ' + report.name + ', ';
+            }
+            if (report.hock == num && hockStr.indexOf(report.name) == -1){
+                hockStr += ' ' + report.name + ', ';
+            }
+            if (report.neck == num && neckStr.indexOf(report.name) == -1){
+                neckStr += ' ' + report.name + ', ';
+            }
+        });
+
+        if (kneeStr) {
+            kneeStr = 'The following cows had knee scores of ' + num + ': ' + kneeStr;
+        }
+        if (hockStr) {
+            hockStr = 'The following cows had hock scores of ' + num + ': ' + hockStr;
+        }
+        if (neckStr) {
+            neckStr = 'The following cows had neck scores of ' + num + ': ' + neckStr;
+        }
+
+        if (kneeStr || hockStr || neckStr) {
+            res.send(kneeStr + hockStr + neckStr);
+        } else {
+            res.send('Sorry, there were no cows with that injury stage');
+        }
+
+    });
+});
+
 server.get('/reports', (req, res, next) => {
     ReportModel.find({}, (err, docs) => {
         var str = 'Today, you entered ' + docs.length + ' injury reports. ';
