@@ -3,6 +3,7 @@ console.log('run');
 const restify = require('restify');
 const mongoose = require('mongoose');
 
+// mongoose.connect('mongodb://localhost:27017/cows')
 mongoose.connect('mongodb://mongo/cows')
 
 const Schema = mongoose.Schema;
@@ -19,14 +20,6 @@ const ReportSchema = new Schema({
 
 const ReportModel = mongoose.model('Cow', ReportSchema);
 
-// const test = new ReportModel;
-
-// test.name = 'Mojito';
-// test.knee = 2;
-// test.save();
-
-
-
 const server = restify.createServer();
 
 server.use(restify.plugins.queryParser());
@@ -35,6 +28,22 @@ server.use(restify.plugins.bodyParser());
 server.get('/', (req, res, next) => {
     res.send('this worked');
 })
+
+server.get('/reports/:cow', (req, res, next) => {
+    console.log(req.params.cow);
+    let name = req.params.cow;
+    ReportModel.findOne({name}, (err, docs) => {
+        console.log(docs);
+        var str;
+        if (err || !docs) {
+            str = 'Sorry, there were no cows by that name.';
+        } else {
+            str = `${name} has a knee score of ${docs.knee}, a hock score of ${docs.hock}, and a neck score of ${docs.neck}.`;
+        }
+        
+        res.send(str);
+    });
+});
 
 server.get('/reports', (req, res, next) => {
     ReportModel.find({}, (err, docs) => {
