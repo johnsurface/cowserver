@@ -84,23 +84,59 @@ server.get('/reports/stage', (req, res, next) => {
 
 server.get('/reports', (req, res, next) => {
     ReportModel.find({}, (err, docs) => {
-        var str = 'Today, you entered ' + docs.length + ' injury reports. ';
-        var numStage3 = 0;
-        docs.forEach(report => {
-            // str += `${report.name} has a knee score of ${report.knee} `;
-            if (report.knee == 3){
-                numStage3++;
+        if (req.query.stage) {
+            let num = req.query.stage;
+            var kneeStr = '';
+            var hockStr = '';
+            var neckStr = '';
+            docs.forEach(report => {
+                if (report.knee == num && kneeStr.indexOf(report.name) == -1){
+                    kneeStr += ' ' + report.name + ', ';
+                }
+                if (report.hock == num && hockStr.indexOf(report.name) == -1){
+                    hockStr += ' ' + report.name + ', ';
+                }
+                if (report.neck == num && neckStr.indexOf(report.name) == -1){
+                    neckStr += ' ' + report.name + ', ';
+                }
+            });
+
+            if (kneeStr) {
+                kneeStr = 'The following cows had knee scores of ' + num + ': ' + kneeStr;
             }
-            if (report.hock == 3){
-                numStage3++;
+            if (hockStr) {
+                hockStr = 'The following cows had hock scores of ' + num + ': ' + hockStr;
             }
-            if (report.neck == 3){
-                numStage3++;
+            if (neckStr) {
+                neckStr = 'The following cows had neck scores of ' + num + ': ' + neckStr;
             }
-        });
-        str += numStage3 + ' included stage 3 injuries.';
-        console.log(str);
-        res.send(str);
+
+            if (kneeStr || hockStr || neckStr) {
+                res.send(kneeStr + hockStr + neckStr);
+            } else {
+                res.send('Sorry, there were no cows with that injury stage');
+            }
+        } else if (req.query.alexa) {
+            var str = 'Today, you entered ' + docs.length + ' injury reports. ';
+            var numStage3 = 0;
+            docs.forEach(report => {
+                // str += `${report.name} has a knee score of ${report.knee} `;
+                if (report.knee == 3){
+                    numStage3++;
+                }
+                if (report.hock == 3){
+                    numStage3++;
+                }
+                if (report.neck == 3){
+                    numStage3++;
+                }
+            });
+            str += numStage3 + ' included stage 3 injuries.';
+            console.log(str);
+            res.send(str);
+        } else {
+            res.send(docs);
+        }
     });
 });
 
