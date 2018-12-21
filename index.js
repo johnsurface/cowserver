@@ -166,7 +166,12 @@ server.get('/reports', (req, res, next) => {
 });
 
 server.post('/report', (req, res, next) => {
-    var body = JSON.parse(req.body);
+    var body;
+    if (req.body.name) {
+        body = req.body;
+    } else {
+        body = JSON.parse(req.body);
+    }
     if (body.name && body.cowId) {
         var report = new ReportModel;
         report.name = body.name;
@@ -174,7 +179,6 @@ server.post('/report', (req, res, next) => {
         report.knee = body.knee || 0;
         report.hock = body.hock || 0;
         report.neck = body.neck || 0;
-        report.timestamp = '2018-12-18 22:14:38.028Z';
         report.save(err => {
             if (err) {
                 console.log(err);
