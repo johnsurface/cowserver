@@ -45,6 +45,17 @@ server.get('/reports/:cow', (req, res, next) => {
     });
 });
 
+server.get('/dropname/:name',(req, res, next) => {
+    var name = req.params.name;
+    ReportModel.deleteMany({name}, err => {
+        if (err) {
+            res.send(400);
+        } else {
+            res.send(200);
+        }
+    });
+});
+
 server.get('/reports/stage', (req, res, next) => {
     let num = req.query.stage;
     ReportModel.find({}, (err, docs) => {
