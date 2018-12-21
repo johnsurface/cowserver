@@ -2,10 +2,10 @@ console.log('run');
 
 const restify = require('restify');
 const mongoose = require('mongoose');
-const moment = require('moment');
+// const moment = require('moment');
 
-mongoose.connect('mongodb://localhost:27017/cows')
-// mongoose.connect('mongodb://mongo/cows')
+// mongoose.connect('mongodb://localhost:27017/cows')
+mongoose.connect('mongodb://mongo/cows')
 
 const Schema = mongoose.Schema;
 
