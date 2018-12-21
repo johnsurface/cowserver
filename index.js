@@ -2,9 +2,10 @@ console.log('run');
 
 const restify = require('restify');
 const mongoose = require('mongoose');
+const moment = require('moment');
 
-// mongoose.connect('mongodb://localhost:27017/cows')
-mongoose.connect('mongodb://mongo/cows')
+mongoose.connect('mongodb://localhost:27017/cows')
+// mongoose.connect('mongodb://mongo/cows')
 
 const Schema = mongoose.Schema;
 
@@ -128,6 +129,10 @@ server.get('/reports', (req, res, next) => {
                 res.send('Sorry, there were no cows with stage ' + num + ' injuries');
             }
         } else if (req.query.alexa) {
+            docs = docs.filter(report => {
+                var now = moment();
+                return now.isSame(moment(report.timestamp), 'day');
+            })
             var str = 'Today, you entered ' + docs.length + ' injury reports. ';
             var numStage4 = 0;
             docs.forEach(report => {
