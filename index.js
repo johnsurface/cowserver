@@ -3,8 +3,8 @@ console.log('run');
 const restify = require('restify');
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/cows')
-// mongoose.connect('mongodb://mongo/cows')
+// mongoose.connect('mongodb://localhost:27017/cows')
+mongoose.connect('mongodb://mongo/cows')
 
 const Schema = mongoose.Schema;
 
