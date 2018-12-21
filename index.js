@@ -129,20 +129,20 @@ server.get('/reports', (req, res, next) => {
             }
         } else if (req.query.alexa) {
             var str = 'Today, you entered ' + docs.length + ' injury reports. ';
-            var numStage3 = 0;
+            var numStage4 = 0;
             docs.forEach(report => {
                 // str += `${report.name} has a knee score of ${report.knee} `;
-                if (report.knee == 3){
-                    numStage3++;
+                if (report.knee == 4){
+                    numStage4++;
                 }
-                if (report.hock == 3){
-                    numStage3++;
+                if (report.hock == 4){
+                    numStage4++;
                 }
-                if (report.neck == 3){
-                    numStage3++;
+                if (report.neck == 4){
+                    numStage4++;
                 }
             });
-            str += numStage3 + ' included stage 3 injuries.';
+            str += numStage4 + ' included stage 4 injuries.';
             console.log(str);
             res.send(str);
         } else {
