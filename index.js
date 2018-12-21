@@ -3,8 +3,8 @@ console.log('run');
 const restify = require('restify');
 const mongoose = require('mongoose');
 
-// mongoose.connect('mongodb://localhost:27017/cows')
-mongoose.connect('mongodb://mongo/cows')
+mongoose.connect('mongodb://localhost:27017/cows')
+// mongoose.connect('mongodb://mongo/cows')
 
 const Schema = mongoose.Schema;
 
@@ -32,7 +32,7 @@ server.get('/', (req, res, next) => {
 server.get('/reports/:cow', (req, res, next) => {
     console.log(req.params.cow);
     let name = req.params.cow;
-    ReportModel.findOne({name}, (err, docs) => {
+    ReportModel.findOne({name}, {}, { sort: { 'timestamp' : -1 }}, (err, docs) => {
         console.log(docs);
         var str;
         if (err || !docs) {
@@ -58,7 +58,7 @@ server.get('/dropname/:name',(req, res, next) => {
 
 server.get('/reports/stage', (req, res, next) => {
     let num = req.query.stage;
-    ReportModel.find({}, (err, docs) => {
+    ReportModel.find({},  {}, { sort: { 'timestamp' : -1 }}, (err, docs) => {
         var kneeStr = '';
         var hockStr = '';
         var neckStr = '';
@@ -94,7 +94,7 @@ server.get('/reports/stage', (req, res, next) => {
 });
 
 server.get('/reports', (req, res, next) => {
-    ReportModel.find({}, (err, docs) => {
+    ReportModel.find({},  {}, { sort: { 'timestamp' : -1 }}, (err, docs) => {
         if (req.query.stage) {
             let num = req.query.stage;
             var kneeStr = '';
